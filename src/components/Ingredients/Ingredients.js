@@ -6,6 +6,7 @@ import Search from './Search';
 
 const Ingredients = () => {
   const [ userIngredients, setUserIngredients ] = useState([]);
+  console.log(userIngredients);
 
   const addIngredientHandler = ingredient => {
     setUserIngredients(prevIngredients => [
@@ -14,13 +15,17 @@ const Ingredients = () => {
     ]);
   };
 
+  const removeIngredientHandler = ingredientId => {
+    setUserIngredients(prevIngredients => prevIngredients.filter((ingredient) => ingredient.id !== ingredientId ));
+  };
+
   return (
     <div className="App">
       <IngredientForm onAddIngredient={addIngredientHandler} />
 
       <section>
         <Search />
-        <IngredientList ingredients={userIngredients} onRemoveItem={() => {}} />
+        <IngredientList ingredients={userIngredients} onRemoveItem={removeIngredientHandler} />
       </section>
     </div>
   );
