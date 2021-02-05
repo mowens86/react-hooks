@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import IngredientForm from './IngredientForm';
 import IngredientList from './IngredientList';
@@ -6,7 +6,27 @@ import Search from './Search';
 
 const Ingredients = () => {
   const [ userIngredients, setUserIngredients ] = useState([]);
-  console.log(userIngredients);
+  
+  useEffect(() => {
+    fetch('https://react-hooks-update-29d9a-default-rtdb.firebaseio.com/ingredients.json')
+      .then(response => response.json())
+      .then(responseData => {
+        const loadedIngredients = [];
+        for (const key in responseData) {
+          loadedIngredients.push({
+            id: key,
+            title: responseData[key].title,
+            amount: responseData[key].amount
+          });
+        }
+        setUserIngredients(loadedIngredients);
+      });
+  }, []); // Adding second argument to useEffect with empty array lets it run only once so setUserIngredients only renders once instead of an infinite loop
+
+  useEffect(() => {
+    console.log('RENDERING INGREDIENTS', userIngredients);
+  }, [userIngredients]);
+
 
   const addIngredientHandler = ingredient => {
     fetch('https://react-hooks-update-29d9a-default-rtdb.firebaseio.com/ingredients.json', {
