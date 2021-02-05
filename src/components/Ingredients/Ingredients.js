@@ -6,7 +6,7 @@ import Search from './Search';
 
 const Ingredients = () => {
   const [ userIngredients, setUserIngredients ] = useState([]);
-  
+
   useEffect(() => {
     console.log('RENDERING INGREDIENTS', userIngredients);
   }, [userIngredients]);
@@ -32,7 +32,11 @@ const Ingredients = () => {
   };
 
   const removeIngredientHandler = ingredientId => {
-    setUserIngredients(prevIngredients => prevIngredients.filter((ingredient) => ingredient.id !== ingredientId ));
+    fetch(`https://react-hooks-update-29d9a-default-rtdb.firebaseio.com/ingredients/${ingredientId}.json`, {
+      method: 'DELETE'
+    }).then(response => {
+      setUserIngredients(prevIngredients => prevIngredients.filter((ingredient) => ingredient.id !== ingredientId ));
+    });
   };
 
   return (
